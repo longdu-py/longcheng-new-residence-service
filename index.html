@@ -1,1 +1,138 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>龙城新居 - 小区便民服务中心</title>
+    <!-- Bootstrap5 CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/main.css">
+</head>
+<body>
+<!-- 导航栏 -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top">
+    <div class="container">
+        <a class="navbar-brand" href="index.html">🏠 龙城新居便民服务</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navMenu">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item"><a class="nav-link active" href="index.html">首页</a></li>
+                <li class="nav-item"><a class="nav-link" href="pages/notice.html">小区公告</a></li>
+                <li class="nav-item"><a class="nav-link" href="pages/repair.html">物业报修</a></li>
+                <li class="nav-item"><a class="nav-link" href="pages/lost-found.html">失物招领</a></li>
+                <li class="nav-item"><a class="nav-link" href="pages/group-buy.html">邻里团购</a></li>
+                <li class="nav-item"><a class="nav-link" href="pages/merchant.html">便民商家</a></li>
+                <li class="nav-item"><a class="nav-link" href="pages/profile.html">业主中心</a></li>
+            </ul>
+            <span class="text-light me-3" id="nowTime"></span>
+        </div>
+    </div>
+</nav>
 
+<!-- 轮播横幅 -->
+<div class="container mt-3">
+    <div id="bannerCarousel" class="carousel slide rounded shadow" data-bs-ride="carousel">
+        <div class="carousel-inner">
+            <div class="carousel-item active bg-warning py-5 text-center">
+                <h3>通知：7月10日早8点小区全区域停水检修</h3>
+            </div>
+            <div class="carousel-item bg-success py-5 text-center text-white">
+                <h3>社区志愿者招募，欢迎业主报名参与</h3>
+            </div>
+            <div class="carousel-item bg-info py-5 text-center text-white">
+                <h3>夏季生鲜邻里团购今日开团，低价配送至小区门口</h3>
+            </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#bannerCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon"></span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#bannerCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon"></span>
+        </button>
+    </div>
+</div>
+
+<!-- 九宫格快捷功能 -->
+<div class="container my-5">
+    <h4 class="text-center mb-4">便民快捷服务</h4>
+    <div class="row g-3">
+        <div class="col-4 col-md-3 col-lg-2">
+            <a href="pages/repair.html" class="card text-center py-4 text-decoration-none text-dark">
+                <div class="fs-2">🔧</div>
+                <div>物业报修</div>
+            </a>
+        </div>
+        <div class="col-4 col-md-3 col-lg-2">
+            <a href="pages/notice.html" class="card text-center py-4 text-decoration-none text-dark">
+                <div class="fs-2">📢</div>
+                <div>小区公告</div>
+            </a>
+        </div>
+        <div class="col-4 col-md-3 col-lg-2">
+            <a href="pages/lost-found.html" class="card text-center py-4 text-decoration-none text-dark">
+                <div class="fs-2">🔍</div>
+                <div>失物招领</div>
+            </a>
+        </div>
+        <div class="col-4 col-md-3 col-lg-2">
+            <a href="pages/group-buy.html" class="card text-center py-4 text-decoration-none text-dark">
+                <div class="fs-2">🥬</div>
+                <div>邻里团购</div>
+            </a>
+        </div>
+        <div class="col-4 col-md-3 col-lg-2">
+            <a href="pages/parking.html" class="card text-center py-4 text-decoration-none text-dark">
+                <div class="fs-2">🅿️</div>
+                <div>停车服务</div>
+            </a>
+        </div>
+        <div class="col-4 col-md-3 col-lg-2">
+            <a href="pages/delivery.html" class="card text-center py-4 text-decoration-none text-dark">
+                <div class="fs-2">📦</div>
+                <div>快递代收</div>
+            </a>
+        </div>
+        <div class="col-4 col-md-3 col-lg-2">
+            <a href="pages/poll.html" class="card text-center py-4 text-decoration-none text-dark">
+                <div class="fs-2">🗳️</div>
+                <div>业主投票</div>
+            </a>
+        </div>
+        <div class="col-4 col-md-3 col-lg-2">
+            <a href="pages/complaint.html" class="card text-center py-4 text-decoration-none text-dark">
+                <div class="fs-2">💬</div>
+                <div>投诉建议</div>
+            </a>
+        </div>
+        <div class="col-4 col-md-3 col-lg-2">
+            <a href="pages/merchant.html" class="card text-center py-4 text-decoration-none text-dark">
+                <div class="fs-2">🏪</div>
+                <div>便民商家</div>
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- 物业应急联系 -->
+<div class="container my-4">
+    <div class="card bg-light p-4 shadow-sm">
+        <h5>☎️ 物业 & 应急联系电话</h5>
+        <p>物业前台：0393-XXXXXXX | 24小时维修：138XXXX8888</p>
+        <p>急救120 | 火警119 | 辖区派出所：0393-XXXXXXX</p>
+    </div>
+</div>
+
+<!-- 底部 -->
+<footer class="bg-dark text-white py-4 mt-5">
+    <div class="container text-center">
+        <p>龙城新居便民服务平台 © 2026 开源项目 | GitHub 开源免费使用</p>
+        <p>本网站仅服务本小区业主，所有信息业主自主发布</p>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="assets/js/app.js"></script>
+</body>
+</html>
