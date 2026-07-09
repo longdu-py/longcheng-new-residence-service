@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>快递代收 - 龙城新居便民服务</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/css/main.css">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top">
+    <div class="container">
+        <a class="navbar-brand" href="../index.html">🏠 龙城新居便民服务</a>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav">
+                <li class="nav-item"><a class="nav-link" href="../index.html">返回首页</a></li>
+            </ul>
+            <span class="text-light ms-auto" id="nowTime"></span>
+        </div>
+    </div>
+</nav>
+
+<div class="container py-4">
+    <h3 class="text-center mb-4">📦 小区快递代收点</h3>
+    <div class="row g-4">
+        <div class="col-md-6">
+            <div class="card p-3 h-100">
+                <h5>南门快递驿站（中通/圆通/极兔）</h5>
+                <p>位置：小区南门商铺102号</p>
+                <p>营业时间：8:00 - 21:00</p>
+                <p>联系电话：135XXXX1111</p>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card p-3 h-100">
+                <h5>北门丰巢智能柜（顺丰/京东）</h5>
+                <p>位置：北门广场两侧智能柜</p>
+                <p>24小时自助取件，超时1元/天</p>
+                <p>顺丰客服：95338</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-5 card p-4 bg-light">
+        <h5>快递丢件投诉表单</h5>
+        <form id="deliverForm">
+            <div class="mb-3">
+                <label>快递公司</label>
+                <select class="form-select" required>
+                    <option>中通快递</option>
+                    <option>圆通快递</option>
+                    <option>极兔快递</option>
+                    <option>顺丰速运</option>
+                    <option>京东快递</option>
+                    <option>邮政EMS</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label>快递单号</label>
+                <input type="text" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label>楼栋房号+联系电话</label>
+                <input type="text" class="form-control" required placeholder="3号楼2单元1502 138XXXX8888">
+            </div>
+            <div class="mb-3">
+                <label>问题描述</label>
+                <textarea class="form-control" rows="3" required placeholder="包裹丢失、错拿、破损等"></textarea>
+            </div>
+            <button class="btn btn-warning w-100">提交丢件反馈</button>
+        </form>
+    </div>
+</div>
+
+<footer class="bg-dark text-white py-3 mt-5 text-center">
+    <small>龙城新居便民平台 ©2026 开源项目</small>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="../assets/js/app.js"></script>
+<script>
+document.getElementById('deliverForm').addEventListener('submit',e=>{
+    e.preventDefault();
+    alert('快递问题反馈已提交，驿站负责人会联系您核实');
+    e.target.reset();
+})
+</script>
+</body>
+</html>
