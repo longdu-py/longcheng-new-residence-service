@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>小区公告 - 龙城新居便民服务</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/css/main.css">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top">
+    <div class="container">
+        <a class="navbar-brand" href="../index.html">🏠 龙城新居便民服务</a>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav">
+                <li class="nav-item"><a class="nav-link" href="../index.html">返回首页</a></li>
+            </ul>
+            <span class="text-light ms-auto" id="nowTime"></span>
+        </div>
+    </div>
+</nav>
+
+<div class="container py-4">
+    <h3 class="text-center mb-4">📢 小区官方公告</h3>
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <input type="text" id="searchNotice" class="form-control" placeholder="搜索公告标题/内容">
+        </div>
+        <div class="col-md-3">
+            <select id="typeFilter" class="form-select">
+                <option value="">全部公告类型</option>
+                <option value="停水停电">停水停电</option>
+                <option value="物业费">物业费通知</option>
+                <option value="消防安全">消防安全</option>
+                <option value="社区活动">社区活动</option>
+                <option value="政策通知">政策通知</option>
+            </select>
+        </div>
+    </div>
+
+    <div id="noticeList">
+        <!-- 公告渲染区域 -->
+    </div>
+
+    <div class="mt-5 card p-4 bg-light">
+        <h5>发布公告（物业专用）</h5>
+        <form id="noticeForm">
+            <div class="mb-3">
+                <label>公告标题</label>
+                <input type="text" class="form-control" required placeholder="如：7月10日全小区停水检修">
+            </div>
+            <div class="mb-3">
+                <label>公告分类</label>
+                <select class="form-select" required>
+                    <option value="停水停电">停水停电</option>
+                    <option value="物业费">物业费通知</option>
+                    <option value="消防安全">消防安全</option>
+                    <option value="社区活动">社区活动</option>
+                    <option value="政策通知">政策通知</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label>公告正文</label>
+                <textarea class="form-control" rows="4" required></textarea>
+            </div>
+            <div class="form-check mb-3">
+                <input class="form-check-input" type="checkbox" id="topCheck">
+                <label class="form-check-label">置顶这条公告</label>
+            </div>
+            <button class="btn btn-success w-100">发布公告</button>
+        </form>
+    </div>
+</div>
+
+<footer class="bg-dark text-white py-3 mt-5 text-center">
+    <small>龙城新居便民平台 ©2026 开源项目</small>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="../assets/js/app.js"></script>
+<script>
+// 渲染公告列表
+function renderNotice(){
+    const list = getLocalData('notice');
+    const wrap = document.getElementById('noticeList');
+    wrap.innerHTML = '';
+    if(list.length === 0){
+        wrap.innerHTML = '<div class="alert alert-info">暂无公告</div>';
+        return;
+    }
+    list.forEach(item=>{
+        let tagClass = 'bg-secondary';
+        if(item.type === '停水停电') tagClass = 'bg-warning text-dark';
+        if(item.type === '社区活动') tagClass = 'bg-success';
+        if(item.type === '消防安全') tagClass = 'bg-danger';
+        let topMark = item.top ? '<span class="badge bg-danger me-2">置顶</span>' : '';
+        wrap.innerHTML += `
+        <div class="card mb-3 shadow-sm ${item.top?'border-danger':''}">
+            <div class="card-body">
+                <h5>${topMark}${item.title}</h5>
+                <span class="badge ${tagClass}">${item.type}</span>
+                <p class="mt-2">${item.content}</p>
+                <div class="text-muted small">发布时间：${item.time}</div>
+            </div>
+        </div>
+        `;
+    })
+}
+renderNotice();
+
+// 提交公告
+document.getElementById('noticeForm').addEventListener('submit',e=>{
+    e.preventDefault();
+    const form = e.target;
+    const data = {
+        title: form[0].value,
+        type: form[1].value,
+        content: form[2].value,
+        top: document.getElementById('topCheck').checked,
+        time: new Date().toLocaleString('zh-CN')
+    };
+    saveLocalData('notice', data);
+    alert('公告发布成功！');
+    form.reset();
+    renderNotice();
+})
+
+// 搜索筛选简易逻辑
+document.getElementById('searchNotice').addEventListener('input',renderNotice);
+document.getElementById('typeFilter').addEventListener('change',renderNotice);
+</script>
+</body>
+</html>
