@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>志愿者招募 - 龙城新居便民服务</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/css/main.css">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top">
+    <div class="container">
+        <a class="navbar-brand" href="../index.html">🏠 龙城新居便民服务</a>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav">
+                <li class="nav-item"><a class="nav-link" href="../index.html">返回首页</a></li>
+            </ul>
+            <span class="text-light ms-auto" id="nowTime"></span>
+        </div>
+    </div>
+</nav>
+
+<div class="container py-4">
+    <h3 class="text-center mb-4">🤝 小区志愿者招募</h3>
+    <div class="card p-4 mb-4 bg-light">
+        <h5>志愿者服务项目</h5>
+        <div class="row g-3 mt-3">
+            <div class="col-md-4"><div class="border p-3 rounded">垃圾分类引导</div></div>
+            <div class="col-md-4"><div class="border p-3 rounded">独居老人帮扶</div></div>
+            <div class="col-md-4"><div class="border p-3 rounded">节日社区活动协助</div></div>
+            <div class="col-md-4"><div class="border p-3 rounded">小区安全巡逻</div></div>
+            <div class="col-md-4"><div class="border p-3 rounded">儿童托管看护</div></div>
+            <div class="col-md-4"><div class="border p-3 rounded">文明劝导宣传</div></div>
+        </div>
+    </div>
+
+    <h4>已报名志愿者名单</h4>
+    <div id="volList"></div>
+
+    <div class="mt-5 card p-4 shadow">
+        <h5>志愿者报名表单</h5>
+        <form id="volForm">
+            <div class="mb-3">
+                <label>业主姓名</label>
+                <input type="text" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label>楼栋房号</label>
+                <input type="text" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label>联系电话</label>
+                <input type="tel" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label>意向服务项目（可多选）</label>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="垃圾分类引导">
+                    <label class="form-check-label">垃圾分类引导</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="独居老人帮扶">
+                    <label class="form-check-label">独居老人帮扶</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="社区活动协助">
+                    <label class="form-check-label">社区活动协助</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="安全巡逻">
+                    <label class="form-check-label">安全巡逻</label>
+                </div>
+            </div>
+            <div class="mb-3">
+                <label>空闲时间段</label>
+                <input type="text" class="form-control" required placeholder="周末全天 / 工作日晚间">
+            </div>
+            <div class="mb-3">
+                <label>个人特长/补充说明</label>
+                <textarea class="form-control" rows="2"></textarea>
+            </div>
+            <button class="btn btn-success w-100">提交志愿者报名</button>
+        </form>
+    </div>
+</div>
+
+<footer class="bg-dark text-white py-3 mt-5 text-center">
+    <small>龙城新居便民平台 ©2026 开源项目</small>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="../assets/js/app.js"></script>
+<script>
+function renderVol(){
+    const list = getLocalData('volunteer');
+    const wrap = document.getElementById('volList');
+    wrap.innerHTML = '';
+    if(list.length === 0){
+        wrap.innerHTML = '<div class="alert alert-info">暂无报名志愿者，欢迎业主参与社区服务</div>';
+        return;
+    }
+    list.forEach(item=>{
+        wrap.innerHTML += `
+        <div class="card mb-3 shadow-sm">
+            <div class="card-body">
+                <h5>${item.name} | ${item.room}</h5>
+                <p><strong>意向服务：</strong>${item.service}</p>
+                <p><strong>空闲时间：</strong>${item.freeTime}</p>
+                <p>${item.desc}</p>
+                <div class="text-muted small">报名时间：${item.time}</div>
+            </div>
+        </div>
+        `;
+    })
+}
+renderVol();
+
+document.getElementById('volForm').addEventListener('submit',e=>{
+    e.preventDefault();
+    const f = e.target;
+    const checkboxes = f.querySelectorAll('input[type=checkbox]:checked');
+    const serviceArr = [];
+    checkboxes.forEach(cb=>serviceArr.push(cb.value));
+    if(serviceArr.length === 0){
+        alert('至少选择一项意向服务');
+        return;
+    }
+    const data = {
+        name: f[0].value,
+        room: f[1].value,
+        phone: f[2].value,
+        service: serviceArr.join
