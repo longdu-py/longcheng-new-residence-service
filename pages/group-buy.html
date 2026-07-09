@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>邻里团购 - 龙城新居便民服务</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/css/main.css">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top">
+    <div class="container">
+        <a class="navbar-brand" href="../index.html">🏠 龙城新居便民服务</a>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav">
+                <li class="nav-item"><a class="nav-link" href="../index.html">返回首页</a></li>
+            </ul>
+            <span class="text-light ms-auto" id="nowTime"></span>
+        </div>
+    </div>
+</nav>
+
+<div class="container py-4">
+    <h3 class="text-center mb-4">🥬 邻里生鲜团购</h3>
+    <div id="buyList"></div>
+
+    <div class="mt-5 card p-4 bg-light">
+        <h5>发起团购（团长发布）</h5>
+        <form id="buyForm">
+            <div class="mb-3">
+                <label>团购商品名称</label>
+                <input type="text" class="form-control" required placeholder="例：本地新鲜草莓5斤装">
+            </div>
+            <div class="mb-3">
+                <label>单价/规格</label>
+                <input type="text" class="form-control" required placeholder="例：29.9元/5斤">
+            </div>
+            <div class="mb-3">
+                <label>开团截止时间</label>
+                <input type="text" class="form-control" required placeholder="例：7月11日晚20点截单">
+            </div>
+            <div class="mb-3">
+                <label>小区自提地点</label>
+                <input type="text" class="form-control" required placeholder="例：小区南门便利店">
+            </div>
+            <div class="mb-3">
+                <label>团长联系微信/电话</label>
+                <input type="text" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label>商品简介</label>
+                <textarea class="form-control" rows="3" placeholder="产地、品质、优惠说明"></textarea>
+            </div>
+            <button class="btn btn-success w-100">发布团购</button>
+        </form>
+    </div>
+</div>
+
+<footer class="bg-dark text-white py-3 mt-5 text-center">
+    <small>龙城新居便民平台 ©2026 开源项目</small>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="../assets/js/app.js"></script>
+<script>
+function renderBuy(){
+    const list = getLocalData('groupbuy');
+    const wrap = document.getElementById('buyList');
+    wrap.innerHTML = '';
+    if(list.length === 0){
+        wrap.innerHTML = '<div class="alert alert-info">暂无邻里团购活动</div>';
+        return;
+    }
+    list.forEach(item=>{
+        wrap.innerHTML += `
+        <div class="card mb-4 shadow-sm">
+            <div class="card-body">
+                <h5 class="text-success">${item.name}</h5>
+                <p><strong>价格规格：</strong>${item.price}</p>
+                <p><strong>截单时间：</strong>${item.endTime}</p>
+                <p><strong>自提点：</strong>${item.pick}</p>
+                <p><strong>团长联系方式：</strong>${item.contact}</p>
+                <p>${item.desc}</p>
+                <div class="text-muted small">发布时间：${item.time}</div>
+            </div>
+        </div>
+        `;
+    })
+}
+renderBuy();
+
+document.getElementById('buyForm').addEventListener('submit',e=>{
+    e.preventDefault();
+    const f = e.target;
+    const data = {
+        name: f[0].value,
+        price: f[1].value,
+        endTime: f[2].value,
+        pick: f[3].value,
+        contact: f[4].value,
+        desc: f[5].value,
+        time: new Date().toLocaleString('zh-CN')
+    };
+    saveLocalData('groupbuy', data);
+    alert('团购发布成功！');
+    f.reset();
+    renderBuy();
+})
+</script>
+</body>
+</html>
