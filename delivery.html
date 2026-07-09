@@ -1,1 +1,75 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>快递代收 - 龙城新居便民服务</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/css/main.css">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top">
+    <div class="container">
+        <a class="navbar-brand" href="../index.html">🏠 龙城新居便民服务</a>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav">
+                <li class="nav-item"><a class="nav-link" href="../index.html">返回首页</a></li>
+                <li class="nav-item"><a class="nav-link active" href="delivery.html">快递代收</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
 
+<div class="container py-5">
+    <h3 class="text-center mb-4">📦 小区快递代收点</h3>
+    <div class="card p-4 shadow mb-4">
+        <h5>驿站信息</h5>
+        <ul class="list-group">
+            <li class="list-group-item">驿站位置：小区大门西侧商铺102</li>
+            <li class="list-group-item">取件时间：08:30 - 21:00</li>
+            <li class="list-group-item">合作快递：中通、圆通、申通、韵达、极兔、邮政</li>
+            <li class="list-group-item">驿站电话：13900006666</li>
+        </ul>
+    </div>
+    <div class="card p-4 shadow form-box mt-5">
+        <h5>快递丢件/破损投诉</h5>
+        <form id="delForm">
+            <div class="mb-3">
+                <label>快递单号</label>
+                <input class="form-control" name="code" required>
+            </div>
+            <div class="mb-3">
+                <label>问题描述</label>
+                <textarea class="form-control" name="desc" required></textarea>
+            </div>
+            <div class="mb-3">
+                <label>联系电话</label>
+                <input type="tel" class="form-control" name="tel" required>
+            </div>
+            <button class="btn btn-warning w-100">提交投诉</button>
+        </form>
+    </div>
+</div>
+
+<footer class="bg-dark text-white py-3 mt-5 text-center">
+    <small>龙城新居便民平台 ©2026 开源项目</small>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="../assets/js/app.js"></script>
+<script>
+document.getElementById("delForm").addEventListener("submit",e=>{
+    e.preventDefault();
+    const f = e.target;
+    const obj = {
+        code: f.code.value,
+        desc: f.desc.value,
+        tel: f.tel.value
+    };
+    saveLocalData("deliveryComplaint", obj);
+    alert("快递问题已登记，驿站负责人将联系您处理");
+    f.reset();
+})
+</script>
+</body>
+</html>
