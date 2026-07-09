@@ -1,1 +1,87 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>停车服务 - 龙城新居便民服务</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/css/main.css">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top">
+    <div class="container">
+        <a class="navbar-brand" href="../index.html">🏠 龙城新居便民服务</a>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav">
+                <li class="nav-item"><a class="nav-link" href="../index.html">返回首页</a></li>
+                <li class="nav-item"><a class="nav-link active" href="parking.html">停车服务</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
 
+<div class="container py-5">
+    <h3 class="text-center mb-4">🅿️ 小区停车管理</h3>
+    <div class="card p-4 shadow mb-4">
+        <h5>收费标准</h5>
+        <div id="parkRuleBox"></div>
+    </div>
+    <div class="card p-4 shadow form-box mt-5">
+        <h5>车辆占道/乱停投诉</h5>
+        <form id="parkComplaint">
+            <div class="mb-3">
+                <label>违规车辆车牌</label>
+                <input class="form-control" name="carNo" required>
+            </div>
+            <div class="mb-3">
+                <label>停放位置</label>
+                <input class="form-control" name="pos" placeholder="例：2号楼单元门口消防通道" required>
+            </div>
+            <div class="mb-3">
+                <label>描述问题</label>
+                <textarea class="form-control" name="desc" required></textarea>
+            </div>
+            <div class="mb-3">
+                <label>联系电话</label>
+                <input type="tel" class="form-control" name="tel" required>
+            </div>
+            <button class="btn btn-danger w-100">提交投诉</button>
+        </form>
+    </div>
+</div>
+
+<footer class="bg-dark text-white py-3 mt-5 text-center">
+    <small>龙城新居便民平台 ©2026 开源项目</small>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="../assets/js/app.js"></script>
+<script>
+window.onload = async function(){
+    const res = await fetch("../data/mock.json");
+    const d = await res.json();
+    const rule = d.parkRule;
+    document.getElementById("parkRuleBox").innerHTML = `
+        <p>月租车位：${rule.monthPrice}</p>
+        <p>临时停车：${rule.tempPrice}</p>
+        <p>车位租赁：${rule.rentInfo}</p>
+        <p class="text-warning mt-3">禁止占用消防通道、单元门口停车，违者物业统一通知移车</p>
+    `;
+}
+
+document.getElementById("parkComplaint").addEventListener("submit",e=>{
+    e.preventDefault();
+    const f = e.target;
+    const obj = {
+        carNo: f.carNo.value,
+        pos: f.pos.value,
+        desc: f.desc.value,
+        tel: f.tel.value
+    };
+    saveLocalData("parkComplaint", obj);
+    alert("乱停车投诉已提交，安保将现场处理");
+    f.reset();
+})
+</script>
+</body>
+</html>
