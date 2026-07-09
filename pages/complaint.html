@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>投诉建议 - 龙城新居便民服务</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/css/main.css">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top">
+    <div class="container">
+        <a class="navbar-brand" href="../index.html">🏠 龙城新居便民服务</a>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav">
+                <li class="nav-item"><a class="nav-link" href="../index.html">返回首页</a></li>
+            </ul>
+            <span class="text-light ms-auto" id="nowTime"></span>
+        </div>
+    </div>
+</nav>
+
+<div class="container py-4">
+    <h3 class="text-center mb-4">💬 物业投诉与业主建议</h3>
+    <div class="row">
+        <div class="col-md-7">
+            <div class="card p-4 shadow">
+                <h5>提交反馈表单</h5>
+                <form id="comForm">
+                    <div class="mb-3">
+                        <label>反馈分类</label>
+                        <select class="form-select" required>
+                            <option value="环境卫生">环境卫生</option>
+                            <option value="噪音扰民">噪音扰民</option>
+                            <option value="安保管理">安保管理</option>
+                            <option value="绿化养护">绿化养护</option>
+                            <option value="物业服务">物业服务态度</option>
+                            <option value="其他建议">其他意见建议</option>
+                        </select>
+                    </div>
+                    <div class="form-check mb-3">
+                        <input class="form-check-input" type="checkbox" id="anonCheck">
+                        <label class="form-check-label">匿名提交（不展示房号电话）</label>
+                    </div>
+                    <div class="mb-3" id="roomRow">
+                        <label>楼栋房号</label>
+                        <input type="text" class="form-control" placeholder="例：5号楼1单元801">
+                    </div>
+                    <div class="mb-3" id="phoneRow">
+                        <label>联系电话</label>
+                        <input type="tel" class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <label>详细描述</label>
+                        <textarea class="form-control" rows="5" required placeholder="清晰说明事件、时间、地点"></textarea>
+                    </div>
+                    <button class="btn btn-primary w-100">提交反馈</button>
+                </form>
+            </div>
+        </div>
+        <div class="col-md-5">
+            <div class="card p-4 h-100 bg-light">
+                <h5>物业处理须知</h5>
+                <ul class="small">
+                    <li>实名反馈会在1-2个工作日电话回访</li>
+                    <li>匿名反馈仅做汇总整改，无法单独回复</li>
+                    <li>紧急情况（消防、人身安全）直接拨打物业24小时维修电话</li>
+                    <li>重复、恶意投诉将不予处理</li>
+                </ul>
+                <div class="mt-4 alert alert-warning">
+                    24小时物业应急：138XXXX8888
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <h4 class="mt-5">已提交反馈公示（物业已回复）</h4>
+    <div id="comList"></div>
+</div>
+
+<footer class="bg-dark text-white py-3 mt-5 text-center">
+    <small>龙城新居便民平台 ©2026 开源项目</small>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="../assets/js/app.js"></script>
+<script>
+// 匿名切换隐藏房号电话
+const anon = document.getElementById('anonCheck');
+const room = document.getElementById('roomRow');
+const phone = document.getElementById('phoneRow');
+anon.onchange = function(){
+    if(this.checked){
+        room.style.display = 'none';
+        phone.style.display = 'none';
+    }else{
+        room.style.display = 'block';
+        phone.style.display = 'block';
+    }
+}
+
+function renderCom(){
+    const list = getLocalData('complaint');
+    const wrap = document.getElementById('comList');
+    wrap.innerHTML = '';
+    if(list.length === 0){
+        wrap.innerHTML = '<div class="alert alert-info">暂无已公示反馈</div>';
+        return;
+    }
+    list.forEach(item=>{
+        let userInfo = item.anon ? '匿名业主' : `${item.room} ${item.phone}`;
+        wrap.innerHTML += `
+        <div class="card mb-3 shadow-sm">
+            <div class="card-body">
+                <span class="badge bg-secondary">${item.type}</span>
+                <p class="mt-2">业主反馈：${item.content}</p>
+                <div class="alert alert-success">物业回复：已登记，安排工作人员3日内整改处理</div>
+                <div class="text-muted small">提交人：${userInfo} | ${item.time}</div>
+            </div>
+        </div>
+        `;
+    })
+}
+renderCom();
+
+document.getElementById('comForm').addEventListener('submit',e=>{
+    e.preventDefault();
+    const f = e.target;
+    const isAnon = document.getElementById('anonCheck').checked;
+    const data = {
+        type: f[0].value,
+        anon: isAnon,
+        room: isAnon ? '匿名' : f[2].value,
+        phone: isAnon ? '隐藏' : f[3].value,
+        content: f[4].value,
+        time: new Date().toLocaleString('zh-CN')
+    };
+    saveLocalData('complaint', data);
+    alert('反馈提交成功，物业会尽快处理！');
+    f.reset();
+    room.style.display = 'block';
+    phone.style.display = 'block';
+    anon.checked = false;
+    renderCom();
+})
+</script>
+</body>
+</html>
