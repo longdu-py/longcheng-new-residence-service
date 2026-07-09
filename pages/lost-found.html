@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>失物招领 - 龙城新居便民服务</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/css/main.css">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top">
+    <div class="container">
+        <a class="navbar-brand" href="../index.html">🏠 龙城新居便民服务</a>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav">
+                <li class="nav-item"><a class="nav-link" href="../index.html">返回首页</a></li>
+            </ul>
+            <span class="text-light ms-auto" id="nowTime"></span>
+        </div>
+    </div>
+</nav>
+
+<div class="container py-4">
+    <h3 class="text-center mb-4">🔍 失物招领专区</h3>
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <select id="lostTypeFilter" class="form-select">
+                <option value="">全部物品分类</option>
+                <option value="钥匙">钥匙</option>
+                <option value="证件">证件</option>
+                <option value="宠物">宠物</option>
+                <option value="快递">快递包裹</option>
+                <option value="衣物">衣物鞋帽</option>
+                <option value="其他">其他物品</option>
+            </select>
+        </div>
+        <div class="col-md-4">
+            <select id="modeFilter" class="form-select">
+                <option value="">全部类型</option>
+                <option value="寻物">寻物启事</option>
+                <option value="招领">失物招领</option>
+            </select>
+        </div>
+    </div>
+
+    <div id="lostList"></div>
+
+    <div class="mt-5 card p-4 bg-light">
+        <h5>发布寻物/招领信息</h5>
+        <form id="lostForm">
+            <div class="mb-3">
+                <label>信息类型</label>
+                <select class="form-select" required>
+                    <option value="寻物">我丢了东西（寻物）</option>
+                    <option value="招领">捡到物品（招领）</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label>物品分类</label>
+                <select class="form-select" required>
+                    <option value="钥匙">钥匙</option>
+                    <option value="证件">证件</option>
+                    <option value="宠物">宠物</option>
+                    <option value="快递">快递包裹</option>
+                    <option value="衣物">衣物鞋帽</option>
+                    <option value="其他">其他物品</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label>物品描述/丢失地点</label>
+                <textarea class="form-control" rows="3" required placeholder="例：3号楼楼下丢失黑色电动车钥匙"></textarea>
+            </div>
+            <div class="mb-3">
+                <label>联系电话</label>
+                <input type="tel" class="form-control" required placeholder="业主联系方式">
+            </div>
+            <button class="btn btn-primary w-100">发布信息</button>
+        </form>
+    </div>
+</div>
+
+<footer class="bg-dark text-white py-3 mt-5 text-center">
+    <small>龙城新居便民平台 ©2026 开源项目</small>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="../assets/js/app.js"></script>
+<script>
+function renderLost(){
+    const list = getLocalData('lostfound');
+    const wrap = document.getElementById('lostList');
+    wrap.innerHTML = '';
+    if(list.length === 0){
+        wrap.innerHTML = '<div class="alert alert-info">暂无失物招领信息</div>';
+        return;
+    }
+    list.forEach(item=>{
+        let modeBadge = item.mode === '寻物'
+            ? '<span class="badge bg-danger">寻物启事</span>'
+            : '<span class="badge bg-success">失物招领</span>';
+        wrap.innerHTML += `
+        <div class="card mb-3 shadow-sm">
+            <div class="card-body">
+                ${modeBadge}
+                <span class="badge bg-secondary">${item.goodsType}</span>
+                <p class="mt-2">${item.desc}</p>
+                <p class="text-primary">联系电话：${item.phone}</p>
+                <div class="text-muted small">发布时间：${item.time}</div>
+            </div>
+        </div>
+        `;
+    })
+}
+renderLost();
+
+document.getElementById('lostForm').addEventListener('submit',e=>{
+    e.preventDefault();
+    const f = e.target;
+    const data = {
+        mode: f[0].value,
+        goodsType: f[1].value,
+        desc: f[2].value,
+        phone: f[3].value,
+        time: new Date().toLocaleString('zh-CN')
+    };
+    saveLocalData('lostfound', data);
+    alert('发布成功！');
+    f.reset();
+    renderLost();
+})
+</script>
+</body>
+</html>
