@@ -1,1 +1,58 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>便民商家 - 龙城新居便民服务</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/css/main.css">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top">
+    <div class="container">
+        <a class="navbar-brand" href="../index.html">🏠 龙城新居便民服务</a>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav">
+                <li class="nav-item"><a class="nav-link" href="../index.html">返回首页</a></li>
+                <li class="nav-item"><a class="nav-link active" href="merchant.html">便民商家</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
 
+<div class="container py-5">
+    <h3 class="text-center mb-4">🏪 小区周边便民商家</h3>
+    <div id="shopBox" class="row g-4"></div>
+</div>
+
+<footer class="bg-dark text-white py-3 mt-5 text-center">
+    <small>龙城新居便民平台 ©2026 开源项目</small>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="../assets/js/app.js"></script>
+<script>
+window.onload = async function(){
+    const res = await fetch("../data/mock.json");
+    const d = await res.json();
+    const box = document.getElementById("shopBox");
+    d.shopList.forEach(shop=>{
+        const html = `
+            <div class="col-md-6 col-lg-3">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body">
+                        <h5>${shop.name}</h5>
+                        <span class="badge bg-secondary">${shop.type}</span>
+                        <p class="mt-2">电话：${shop.tel}</p>
+                        <p>营业时间：${shop.time}</p>
+                        <p class="text-success">业主福利：${shop.discount}</p>
+                    </div>
+                </div>
+            </div>
+        `;
+        box.innerHTML += html;
+    })
+}
+</script>
+</body>
+</html>
